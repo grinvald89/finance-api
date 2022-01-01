@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\finance-api-1\\finance-api\\finance-api.csproj": {}
+    "C:\\Projects\\finance-api\\finance-api\\finance-api.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\finance-api-1\\finance-api\\finance-api.csproj": {
+    "C:\\Projects\\finance-api\\finance-api\\finance-api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\finance-api-1\\finance-api\\finance-api.csproj",
+        "projectUniqueName": "C:\\Projects\\finance-api\\finance-api\\finance-api.csproj",
         "projectName": "finance-api",
-        "projectPath": "C:\\Projects\\finance-api-1\\finance-api\\finance-api.csproj",
+        "projectPath": "C:\\Projects\\finance-api\\finance-api\\finance-api.csproj",
         "packagesPath": "C:\\Users\\Focus\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\finance-api-1\\finance-api\\obj\\",
+        "outputPath": "C:\\Projects\\finance-api\\finance-api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,6 +44,30 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.1, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"

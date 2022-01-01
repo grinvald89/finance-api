@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "zAVpjrgoh5TGaqITcU7ROZOvaOc/uJxawYoRhgMF5T4=",
+  "Source": "finance-api",
+  "BasePath": "_content/finance-api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

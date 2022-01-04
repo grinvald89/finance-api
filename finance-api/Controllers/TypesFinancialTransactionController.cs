@@ -9,14 +9,13 @@ namespace finance_api.Controllers
     [ApiController]
     public class TypesFinancialTransactionController : ControllerBase
     {
-        private readonly TypeFinancialTransactionDbContext _dbContext;
+        private readonly FinanceDbContext _dbContext;
 
-        public TypesFinancialTransactionController(TypeFinancialTransactionDbContext dbContext)
+        public TypesFinancialTransactionController(FinanceDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        // GET: api/types-financial-transaction
         [HttpGet]
         public TypeFinancialTransaction[] Get()
         {

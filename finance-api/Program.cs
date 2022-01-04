@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 var connectionString = builder.Configuration.GetConnectionString("DataBase");
-builder.Services.AddDbContext<TypeFinancialTransactionDbContext>(options =>
+builder.Services.AddDbContext<FinanceDbContext>(options =>
     options.UseSqlServer(connectionString)
 );
 
@@ -24,6 +24,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseHttpsRedirection();
 

@@ -20,7 +20,7 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<TransactionCategoryOption> Get()
         {
-            string? queryCategoryId = HttpContext.Request.Query["CategoryId"];
+            string? queryCategoryId = HttpContext.Request.Query["categoryId"];
             Guid categoryId;
 
             if (queryCategoryId == null)

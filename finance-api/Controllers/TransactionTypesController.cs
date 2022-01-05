@@ -18,16 +18,15 @@ namespace finance_api.Controllers
         }
 
         [HttpGet]
-        public TransactionType[] Get()
+        public List<TransactionType> Get()
         {
-            return _dbContext.TransactionTypes.ToArray();
+            return _dbContext.TransactionTypes.ToList();
         }
 
         [HttpGet("{id}")]
         public TransactionType? Get(Guid id)
         {
-            List<TransactionType> types = _dbContext.TransactionTypes
-                .ToList();
+            List<TransactionType> types = _dbContext.TransactionTypes.ToList();
 
             return types.Find(t => t.Id == id);
         }

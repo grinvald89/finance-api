@@ -36,6 +36,23 @@ namespace finance_api.Controllers
             return transactions;
         }
 
+        [HttpGet("{id}")]
+        public Transaction? Get(Guid id)
+        {
+            List<Transaction> transactions = _dbContext.Transactions
+                .Include(t => t.Category)
+                .Include(t => t.CategoryOption)
+                .Include(t => t.Payer)
+                .Include(t => t.Status)
+                .Include(t => t.SubCategory)
+                .Include(t => t.SubCategoryFirstOption)
+                .Include(t => t.SubCategorySecondOption)
+                .Include(t => t.Type)
+                .ToList();
+
+            return transactions.Find(t => t.Id == id);
+        }
+
         [HttpPost]
         public IActionResult Post(ITransactionCreateRequest request)
         {

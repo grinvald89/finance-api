@@ -12,7 +12,7 @@ using finance_api.Data;
 namespace finance_api.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    [Migration("20220104043056_init")]
+    [Migration("20220105022939_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace finance_api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("finance_api.Data.TypeFinancialTransaction", b =>
+            modelBuilder.Entity("finance_api.Data.TransactionStatus", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,7 +36,7 @@ namespace finance_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypesFinancialTransaction");
+                    b.ToTable("TransactionStatuses");
                 });
 
             modelBuilder.Entity("finance_api.Models.BusinessAccount", b =>
@@ -87,6 +87,162 @@ namespace finance_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PersonalAccounts");
+                });
+
+            modelBuilder.Entity("finance_api.Models.Transaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FirstOptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PayerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SecondOptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("StatusId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("TransactionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("FirstOptionId");
+
+                    b.HasIndex("OptionId");
+
+                    b.HasIndex("PayerId");
+
+                    b.HasIndex("SecondOptionId");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("SubCategoryId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("finance_api.Models.TransactionCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionCategories");
+                });
+
+            modelBuilder.Entity("finance_api.Models.TransactionCategoryOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionCategoryOptions");
+                });
+
+            modelBuilder.Entity("finance_api.Models.TransactionSubCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionSubCategories");
+                });
+
+            modelBuilder.Entity("finance_api.Models.TransactionSubCategoryFirstOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SubCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionSubCategoryFirstOptions");
+                });
+
+            modelBuilder.Entity("finance_api.Models.TransactionSubCategorySecondOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SubCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionSubCategorySecondOptions");
+                });
+
+            modelBuilder.Entity("finance_api.Models.TransactionType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionTypes");
                 });
 
             modelBuilder.Entity("finance_api.Models.User", b =>
@@ -199,6 +355,73 @@ namespace finance_api.Migrations
                     b.HasOne("finance_api.Models.User", null)
                         .WithMany("BusinessAccounts")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("finance_api.Models.Transaction", b =>
+                {
+                    b.HasOne("finance_api.Models.TransactionCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Models.TransactionSubCategoryFirstOption", "FirstOption")
+                        .WithMany()
+                        .HasForeignKey("FirstOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Models.TransactionCategoryOption", "Option")
+                        .WithMany()
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Models.User", "Payer")
+                        .WithMany()
+                        .HasForeignKey("PayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Models.TransactionSubCategorySecondOption", "SecondOption")
+                        .WithMany()
+                        .HasForeignKey("SecondOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Data.TransactionStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Models.TransactionSubCategory", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Models.TransactionType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("FirstOption");
+
+                    b.Navigation("Option");
+
+                    b.Navigation("Payer");
+
+                    b.Navigation("SecondOption");
+
+                    b.Navigation("Status");
+
+                    b.Navigation("SubCategory");
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("finance_api.Models.User", b =>

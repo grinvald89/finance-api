@@ -12,7 +12,6 @@ namespace finance_api.Data
             this.dbContext = dbContext;
         }
 
-        public IEnumerable<TypeFinancialTransaction> TypesFinancialTransaction => dbContext.TypesFinancialTransaction;
         public IEnumerable<User> Users =>
                 dbContext.Users
                     .Include(c => c.FullName)
@@ -28,5 +27,24 @@ namespace finance_api.Data
         public IEnumerable<FamilyAccount> FamilyAccounts => dbContext.FamilyAccounts;
         public IEnumerable<UserRole> UserRoles => dbContext.UserRoles;
         public IEnumerable<UserAuthorization> UserAuthorizations => dbContext.UserAuthorizations;
+
+
+        public IEnumerable<Transaction> Transactions =>
+                dbContext.Transactions
+                    .Include(t => t.Category)
+                    .Include(t => t.Option)
+                    .Include(t => t.Status)
+                    .Include(t => t.SubCategory)
+                    .Include(t => t.FirstOption)
+                    .Include(t => t.SecondOption)
+                    .Include(t => t.Type);
+
+        public IEnumerable<TransactionCategory> TransactionCategories { get; set; }
+        public IEnumerable<TransactionCategoryOption> TransactionCategoryOptions { get; set; }
+        public IEnumerable<TransactionStatus> TransactionStatuses { get; set; }
+        public IEnumerable<TransactionSubCategory> TransactionSubCategories { get; set; }
+        public IEnumerable<TransactionSubCategoryFirstOption> TransactionSubCategoryFirstOptions { get; set; }
+        public IEnumerable<TransactionSubCategorySecondOption> TransactionSubCategorySecondOptions { get; set; }
+        public IEnumerable<TransactionType> TransactionTypes { get; set; }
     }
 }

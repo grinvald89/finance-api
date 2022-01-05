@@ -1,25 +1,26 @@
 ﻿using finance_api.Data;
+using finance_api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace finance_api.Controllers
 {
-    [Route("api/types-financial-transaction")]
+    [Route("api/transaction-types")]
     [ApiController]
-    public class TypesFinancialTransactionController : ControllerBase
+    public class TransactionTypesController : ControllerBase
     {
         private readonly FinanceDbContext _dbContext;
 
-        public TypesFinancialTransactionController(FinanceDbContext dbContext)
+        public TransactionTypesController(FinanceDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         [HttpGet]
-        public TypeFinancialTransaction[] Get()
+        public TransactionType[] Get()
         {
-            return _dbContext.TypesFinancialTransaction.ToArray();
+            return _dbContext.TransactionTypes.ToArray();
         }
     }
 }

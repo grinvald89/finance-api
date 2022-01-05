@@ -1,6 +1,5 @@
 ﻿using finance_api.Data;
 using finance_api.Models;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace finance_api.Data
+namespace finance_api.Models
 {
-    public class TypeFinancialTransaction
+    public class TransactionType
     {
         [Key]
         [Required]

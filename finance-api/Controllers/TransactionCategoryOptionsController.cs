@@ -20,7 +20,18 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<TransactionCategoryOption> Get()
         {
-            return _dbContext.TransactionCategoryOptions.ToList().FindAll(c => !c.Deleted);
+            string? queryCategoryId = HttpContext.Request.Query["CategoryId"];
+            Guid categoryId;
+
+            if (queryCategoryId == null)
+            {
+                return _dbContext.TransactionCategoryOptions.ToList().FindAll(c => !c.Deleted);
+            }
+
+            categoryId = Guid.Parse(queryCategoryId);
+
+            return _dbContext.TransactionCategoryOptions.ToList()
+                .FindAll(c => !c.Deleted && Guid.Equals(c.CategoryId, categoryId));
         }
 
         [HttpGet("{id}")]
@@ -52,27 +63,6 @@ namespace finance_api.Controllers
         {
             public Guid CategoryId { get; set; }
             public string Name { get; set; }
-        }
-    }
-
-    [Route("api/transaction-category-options/by-category")]
-    [ApiController]
-    public class TransactionCategoryOptionsByCategoryController : ControllerBase
-    {
-        private readonly FinanceDbContext dbContext;
-
-        public TransactionCategoryOptionsByCategoryController(FinanceDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
-
-        [HttpGet("{categoryId}")]
-        public List<TransactionCategoryOption>? Get(Guid categoryId)
-        {
-            List<TransactionCategoryOption> options = this.dbContext.TransactionCategoryOptions.ToList()
-                .FindAll(c => !c.Deleted && c.CategoryId == categoryId);
-
-            return options;
         }
     }
 }

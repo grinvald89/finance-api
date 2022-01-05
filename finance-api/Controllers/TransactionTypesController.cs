@@ -22,5 +22,34 @@ namespace finance_api.Controllers
         {
             return _dbContext.TransactionTypes.ToArray();
         }
+
+        [HttpGet("{id}")]
+        public TransactionType? Get(Guid id)
+        {
+            List<TransactionType> types = _dbContext.TransactionTypes
+                .ToList();
+
+            return types.Find(t => t.Id == id);
+        }
+
+        [HttpPost]
+        public IActionResult Post(TransactionTypeCreateRequest request)
+        {
+            TransactionType type = new TransactionType()
+            {
+                Id = Guid.NewGuid(),
+                Name = request.Name
+            };
+
+            _dbContext.TransactionTypes.Add(type);
+            _dbContext.SaveChanges();
+
+            return Ok(type);
+        }
+
+        public class TransactionTypeCreateRequest
+        {
+            public string Name { get; set; }
+        }
     }
 }

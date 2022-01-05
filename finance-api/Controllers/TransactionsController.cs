@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace finance_api.Controllers
 {
+    /*
     [Route("api/transaction-types")]
     [ApiController]
     public class TransactionsController : ControllerBase
@@ -159,4 +160,5 @@ namespace finance_api.Controllers
         public Guid TypeId { get; set; }
 
     }
+    */
 }

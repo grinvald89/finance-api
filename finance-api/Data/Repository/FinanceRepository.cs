@@ -32,11 +32,11 @@ namespace finance_api.Data
         public IEnumerable<Transaction> Transactions =>
                 dbContext.Transactions
                     .Include(t => t.Category)
-                    .Include(t => t.Option)
+                    .Include(t => t.CategoryOption)
                     .Include(t => t.Status)
                     .Include(t => t.SubCategory)
-                    .Include(t => t.FirstOption)
-                    .Include(t => t.SecondOption)
+                    .Include(t => t.SubCategoryFirstOption)
+                    .Include(t => t.SubCategorySecondOption)
                     .Include(t => t.Type);
 
         public IEnumerable<TransactionCategory> TransactionCategories { get; set; }

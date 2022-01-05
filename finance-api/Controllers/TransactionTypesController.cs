@@ -36,6 +36,7 @@ namespace finance_api.Controllers
         {
             TransactionType type = new TransactionType()
             {
+                Deleted = false,
                 Id = Guid.NewGuid(),
                 Name = request.Name
             };

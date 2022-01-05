@@ -36,6 +36,7 @@ namespace finance_api.Controllers
         {
             TransactionCategory category = new TransactionCategory()
             {
+                Deleted = false,
                 Id = Guid.NewGuid(),
                 Name = request.Name
             };

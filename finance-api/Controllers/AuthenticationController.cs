@@ -71,6 +71,7 @@ namespace finance_api.Controllers
             UserAuthorization authorization = new UserAuthorization()
             {
                 AccessToken = Guid.NewGuid(),
+                Deleted = false,
                 Id = Guid.NewGuid(),
                 IsBlocked = false,
                 Password = adminLogin.Password,
@@ -80,18 +81,21 @@ namespace finance_api.Controllers
 
             FamilyAccount familyAccount = new FamilyAccount()
             {
+                Deleted = false,
                 Id = Guid.NewGuid(),
                 Name = "",
             };
 
             PersonalAccount personalAccount = new PersonalAccount()
             {
+                Deleted = false,
                 Id = Guid.NewGuid(),
                 Name = ""
             };
 
             UserFullName fullName = new UserFullName()
             {
+                Deleted = false,
                 FirstName = "",
                 Id = Guid.NewGuid(),
                 LastName = "",
@@ -103,6 +107,7 @@ namespace finance_api.Controllers
                 Authorization = authorization,
                 BusinessAccounts = new List<BusinessAccount>(),
                 CreationDate = DateTime.Now,
+                Deleted = false,
                 FamilyAccount = familyAccount,
                 FullName = fullName,
                 Id = Guid.NewGuid(),
@@ -120,12 +125,15 @@ namespace finance_api.Controllers
 
         private UserRole GetOrCreateAdminRole()
         {
-            UserRole? adminRole = _dbContext.UserRoles.ToList().Find(role => role.Name == adminRoleName);
+            UserRole? adminRole = _dbContext.UserRoles.ToList()
+                .FindAll(u => !u.Deleted)
+                .Find(role => role.Name == adminRoleName);
 
             if (adminRole == null)
             {
                 adminRole = new UserRole()
                 {
+                    Deleted = false,
                     Id = Guid.NewGuid(),
                     Name = adminRoleName
                 };
@@ -142,7 +150,9 @@ namespace finance_api.Controllers
         {
             List<User> users = _dbContext.Users.Include(u => u.Authorization).ToList();
 
-            return users.Find(u => u.Authorization.UserName == userName);
+            return users
+                .FindAll(u => !u.Deleted)
+                .Find(u => u.Authorization.UserName == userName);
         }
     }
 

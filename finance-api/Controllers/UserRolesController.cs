@@ -36,6 +36,7 @@ namespace finance_api.Controllers
         {
             UserRole role = new UserRole()
             {
+                Deleted = false,
                 Id = Guid.NewGuid(),
                 Name = request.Name
             };

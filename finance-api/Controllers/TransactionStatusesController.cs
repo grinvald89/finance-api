@@ -38,6 +38,7 @@ namespace finance_api.Controllers
         {
             TransactionStatus status = new TransactionStatus()
             {
+                Deleted = false,
                 Id = Guid.NewGuid(),
                 Name = request.Name
             };

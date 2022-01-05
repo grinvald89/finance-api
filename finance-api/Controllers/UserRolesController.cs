@@ -20,13 +20,13 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<UserRole> Get()
         {
-            return _dbContext.UserRoles.ToList();
+            return _dbContext.UserRoles.ToList().FindAll(u => !u.Deleted);
         }
 
         [HttpGet("{id}")]
         public UserRole? Get(Guid id)
         {
-            List<UserRole> roles = _dbContext.UserRoles.ToList();
+            List<UserRole> roles = _dbContext.UserRoles.ToList().FindAll(u => !u.Deleted);
 
             return roles.Find(t => t.Id == id);
         }

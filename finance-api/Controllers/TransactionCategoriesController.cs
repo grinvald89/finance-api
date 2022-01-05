@@ -20,13 +20,13 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<TransactionCategory> Get()
         {
-            return _dbContext.TransactionCategories.ToList();
+            return _dbContext.TransactionCategories.ToList().FindAll(c => !c.Deleted);
         }
 
         [HttpGet("{id}")]
         public TransactionCategory? Get(Guid id)
         {
-            List<TransactionCategory> categories = _dbContext.TransactionCategories.ToList();
+            List<TransactionCategory> categories = _dbContext.TransactionCategories.ToList().FindAll(c => !c.Deleted);
 
             return categories.Find(t => t.Id == id);
         }

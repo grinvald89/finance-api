@@ -20,13 +20,15 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<TransactionStatus> Get()
         {
-            return _dbContext.TransactionStatuses.ToList();
+            List<TransactionStatus> statuses = _dbContext.TransactionStatuses.ToList().FindAll(s => !s.Deleted);
+
+            return statuses;
         }
 
         [HttpGet("{id}")]
         public TransactionStatus? Get(Guid id)
         {
-            List<TransactionStatus> statuses = _dbContext.TransactionStatuses.ToList();
+            List<TransactionStatus> statuses = _dbContext.TransactionStatuses.ToList().FindAll(s => !s.Deleted);
 
             return statuses.Find(t => t.Id == id);
         }

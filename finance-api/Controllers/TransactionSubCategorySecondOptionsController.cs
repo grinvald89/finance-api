@@ -54,7 +54,7 @@ namespace finance_api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(TransactionCategoryOptionCreateRequest request)
+        public IActionResult Post(SubCategorySecondOptionCreateRequest request)
         {
             TransactionSubCategorySecondOption option = new TransactionSubCategorySecondOption()
             {
@@ -71,7 +71,7 @@ namespace finance_api.Controllers
             return Ok(option);
         }
 
-        public class TransactionCategoryOptionCreateRequest
+        public class SubCategorySecondOptionCreateRequest
         {
             public Guid SubCategoryId { get; set; }
             public Guid SubCategoryFirstOptionId { get; set; }

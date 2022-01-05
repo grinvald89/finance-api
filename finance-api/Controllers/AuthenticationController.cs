@@ -55,7 +55,8 @@ namespace finance_api.Controllers
         {
             User? user = _dbContext.Users
                 .Include(u => u.Authorization)
-                .ToList().Find(user => user.Authorization.UserName == adminLogin.UserName);
+                .ToList()
+                .Find(user => user.Authorization.UserName == adminLogin.UserName);
 
             if (user == null)
             {

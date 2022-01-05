@@ -14,6 +14,7 @@ namespace finance_api.Models
         public FamilyAccount FamilyAccount { get; set; }
         public List<UserRole> Roles { get; set; }
         public UserAuthorization Authorization { get; set; }
+        public bool Deleted { get; set; }
     }
 
     public class UserFullName
@@ -27,6 +28,7 @@ namespace finance_api.Models
         public string FirstName { get; set; }
         [Required]
         public string MiddleName { get; set; }
+        public bool Deleted { get; set; }
     }
 
     public class UserRole
@@ -35,6 +37,7 @@ namespace finance_api.Models
         [Required]
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public bool Deleted { get; set; }
     }
 
     public class UserAuthorization
@@ -47,5 +50,6 @@ namespace finance_api.Models
         public DateTime TokenUpdateDate { get; set; }
         public Guid AccessToken { get; set; }
         public bool IsBlocked { get; set; }
+        public bool Deleted { get; set; }
     }
 }

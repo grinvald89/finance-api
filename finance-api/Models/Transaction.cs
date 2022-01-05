@@ -32,5 +32,6 @@ namespace finance_api.Models
 
         // Опция для подкатегории второго уровня
         public TransactionSubCategorySecondOption SubCategorySecondOption { get; set; }
+        public bool Deleted { get; set; }
     }
 }

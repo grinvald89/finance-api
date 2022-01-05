@@ -10,5 +10,6 @@ namespace finance_api.Models
 
         [Required]
         public string Name { get; set; }
+        public bool Deleted { get; set; }
     }
 }

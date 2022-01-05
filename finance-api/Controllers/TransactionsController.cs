@@ -20,9 +20,20 @@ namespace finance_api.Controllers
         }
 
         [HttpGet]
-        public Transaction[] Get()
+        public List<Transaction> Get()
         {
-            return _dbContext.Transactions.ToArray();
+            List<Transaction> transactions = _dbContext.Transactions
+                .Include(t => t.Category)
+                .Include(t => t.CategoryOption)
+                .Include(t => t.Payer)
+                .Include(t => t.Status)
+                .Include(t => t.SubCategory)
+                .Include(t => t.SubCategoryFirstOption)
+                .Include(t => t.SubCategorySecondOption)
+                .Include(t => t.Type)
+                .ToList();
+
+            return transactions;
         }
 
         [HttpPost]

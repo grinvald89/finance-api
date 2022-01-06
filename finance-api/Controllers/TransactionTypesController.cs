@@ -34,6 +34,14 @@ namespace finance_api.Controllers
         [HttpPost]
         public IActionResult Post(TransactionTypeCreateRequest request)
         {
+            bool isTypeExist = _dbContext.TransactionTypes.ToList()
+                .Find(t => t.Name == request.Name) != null;
+
+            if (isTypeExist)
+            {
+                return StatusCode(501, "Тип '" + request.Name + "' уже существует!");
+            }
+
             TransactionType type = new TransactionType()
             {
                 Deleted = false,

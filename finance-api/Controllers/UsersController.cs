@@ -45,9 +45,11 @@ namespace finance_api.Controllers
             _dbContext.SaveChanges();
             */
 
-            return StatusCode(403, "asd");
+            // return StatusCode(403, "asd");
 
-            // return _dbContext.Users.ToArray();
+            List<User> users = _dbContext.Users.ToList();
+
+            return Ok(users);
         }
     }
 }

@@ -36,6 +36,14 @@ namespace finance_api.Controllers
         [HttpPost]
         public IActionResult Post(TransactionStatusCreateRequest request)
         {
+            bool isStatusExist = _dbContext.TransactionStatuses.ToList()
+                .Find(s => s.Name == request.Name) != null;
+
+            if (isStatusExist)
+            {
+                return StatusCode(501, "Статус '" + request.Name + "' уже существует!");
+            }
+
             TransactionStatus status = new TransactionStatus()
             {
                 Deleted = false,

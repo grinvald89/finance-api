@@ -20,19 +20,24 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<UserRole> Get()
         {
-            return _dbContext.UserRoles.ToList().FindAll(u => !u.Deleted);
+            return _dbContext.UserRoles
+                .ToList()
+                .FindAll(u => !u.Deleted);
         }
 
         [HttpGet("{id}")]
         public UserRole? Get(Guid id)
         {
-            List<UserRole> roles = _dbContext.UserRoles.ToList().FindAll(u => !u.Deleted);
+            List<UserRole> roles =
+                _dbContext.UserRoles
+                    .ToList()
+                    .FindAll(u => !u.Deleted);
 
             return roles.Find(t => t.Id == id);
         }
 
-        [HttpPost]
-        public IActionResult Post(UserRoleCreateRequest request)
+        [HttpPut]
+        public IActionResult Put(UserRoleRequest request)
         {
             UserRole role = new UserRole()
             {
@@ -47,9 +52,50 @@ namespace finance_api.Controllers
             return Ok(role);
         }
 
-        public class UserRoleCreateRequest
+        [HttpPost]
+        public IActionResult Post(UserRoleRequest request)
         {
+            // Todo: проверка на id и существование роли
+
+            UserRole role =
+                _dbContext.UserRoles
+                    .ToList()
+                    .FindAll(u => !u.Deleted)
+                    .Find(u => Guid.Equals(u.Id, request.Id));
+
+            role.Name = request.Name;
+
+            _dbContext.SaveChanges();
+
+            return Ok(role);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(UserRoleIdRequest request)
+        {
+            // Todo: проверка на id и существование роли
+
+            UserRole role =
+                _dbContext.UserRoles
+                    .ToList()
+                    .Find(u => u.Id == request.Id);
+
+            role.Deleted = true;
+
+            _dbContext.SaveChanges();
+
+            return Ok(role);
+        }
+
+        public class UserRoleRequest
+        {
+            public Guid Id { get; set; }
             public string Name { get; set; }
+        }
+
+        public class UserRoleIdRequest
+        {
+            public Guid Id { get; set; }
         }
     }
 }

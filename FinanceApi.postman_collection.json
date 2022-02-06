@@ -1,0 +1,1375 @@
+{
+	"info": {
+		"_postman_id": "e832916a-ab59-4601-b0f9-538ddb61a27a",
+		"name": "FinanceApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Список пользователей",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Пользователь по Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/users/5dbea60b-7952-47a4-8260-c31ebb03f695",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"users",
+								"5dbea60b-7952-47a4-8260-c31ebb03f695"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание пользователя",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FirstName\": \"Исполнен\",\r\n    \"LastName\": \"\",\r\n    \"MiddleName\": \"\",\r\n    \"Password\": \"\",\r\n    \"RoleIds\": [],\r\n    \"UserName\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение пользователя",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"FirstName\": \"Владимир\",\r\n    \"Id\": \"5dbea60b-7952-47a4-8260-c31ebb03f695\",\r\n    \"LastName\": \"Гринвальд\",\r\n    \"MiddleName\": \"Сергеевич\",\r\n    \"Password\": \"123456\",\r\n    \"RoleIds\": [\"c7451fb9-22a6-4bc9-b656-002d2973025d\"],\r\n    \"UserName\": \"grinvald\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление пользователя",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"5dbea60b-7952-47a4-8260-c31ebb03f695\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/users",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserRoles",
+			"item": [
+				{
+					"name": "Список ролей пользователя",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/user-roles",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"user-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ролей пользователя по Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/user-roles/c7451fb9-22a6-4bc9-b656-002d2973025d",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"user-roles",
+								"c7451fb9-22a6-4bc9-b656-002d2973025d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание роли пользователя",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"admin\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/user-roles",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"user-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение роли пользователя",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"c7451fb9-22a6-4bc9-b656-002d2973025d\",\r\n    \"Name\": \"admin\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/user-roles",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"user-roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление роли пользователя",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"c7451fb9-22a6-4bc9-b656-002d2973025d\",\r\n    \"Name\": \"admin\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/user-roles",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"user-roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Список транзакций",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transactions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Транзакция по Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transactions/50a73ace-1240-4ddf-bc38-c315218b6598",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transactions",
+								"50a73ace-1240-4ddf-bc38-c315218b6598"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание транзакции",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CategoryId\": \"171fc4d1-57ec-4160-a613-ccba9e176bcd\",\r\n    \"Comment\": \"Тестовая транзакция4\",\r\n    \"DirectionId\": \"f6d50908-a734-4d77-8cf8-b7ff7ccb4f89\",\r\n    \"PayerId\": \"5dbea60b-7952-47a4-8260-c31ebb03f695\",\r\n    \"StatusId\": \"a20ad6f6-5bf1-4212-8d94-077c875aea02\",\r\n    \"TransactionDate\": \"2022-02-06\",\r\n    \"TagIds\": [\"8ab139f7-03f2-439e-a051-ebca57f311ba\"],\r\n    \"TypeId\": \"d0d09615-9b0c-4b72-ab61-1810eada9ecd\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transactions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение транзакции",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CategoryId\": \"171fc4d1-57ec-4160-a613-ccba9e176bcd\",\r\n    \"Comment\": \"Тестовая транзакция5\",\r\n    \"DirectionId\": \"f6d50908-a734-4d77-8cf8-b7ff7ccb4f89\",\r\n    \"Id\": \"b65e0e14-0cd9-4e7f-8731-d7111e092707\",\r\n    \"PayerId\": \"5dbea60b-7952-47a4-8260-c31ebb03f695\",\r\n    \"StatusId\": \"a20ad6f6-5bf1-4212-8d94-077c875aea02\",\r\n    \"TransactionDate\": \"2022-02-06\",\r\n    \"TagIds\": [\"8ab139f7-03f2-439e-a051-ebca57f311ba\"],\r\n    \"TypeId\": \"d0d09615-9b0c-4b72-ab61-1810eada9ecd\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transactions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление транзакции",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CategoryId\": \"171fc4d1-57ec-4160-a613-ccba9e176bcd\",\r\n    \"Comment\": \"Тестовая транзакция5\",\r\n    \"DirectionId\": \"f6d50908-a734-4d77-8cf8-b7ff7ccb4f89\",\r\n    \"Id\": \"b65e0e14-0cd9-4e7f-8731-d7111e092707\",\r\n    \"PayerId\": \"5dbea60b-7952-47a4-8260-c31ebb03f695\",\r\n    \"StatusId\": \"a20ad6f6-5bf1-4212-8d94-077c875aea02\",\r\n    \"TransactionDate\": \"2022-02-06\",\r\n    \"TagIds\": [\"8ab139f7-03f2-439e-a051-ebca57f311ba\"],\r\n    \"TypeId\": \"d0d09615-9b0c-4b72-ab61-1810eada9ecd\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transactions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transactions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransactionTypes",
+			"item": [
+				{
+					"name": "Список типов транзакций",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-types",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Тип транзакции по Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-types/d0d09615-9b0c-4b72-ab61-1810eada9ecd",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-types",
+								"d0d09615-9b0c-4b72-ab61-1810eada9ecd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание типа транзакции",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Расход\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-types",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение типа транзакции",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"d0d09615-9b0c-4b72-ab61-1810eada9ecd\",\r\n    \"Name\": \"Расход\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-types",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление типа транзакции",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"d0d09615-9b0c-4b72-ab61-1810eada9ecd\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-types",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-types"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransactionStatuses",
+			"item": [
+				{
+					"name": "Список статусов транзакций",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-statuses",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Статус транзакций по Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-statuses/a20ad6f6-5bf1-4212-8d94-077c875aea02",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-statuses",
+								"a20ad6f6-5bf1-4212-8d94-077c875aea02"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание статуса транзакции",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Исполнен\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-statuses",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение статуса транзакции",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"a20ad6f6-5bf1-4212-8d94-077c875aea02\",\r\n    \"Name\": \"Исполнен\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-statuses",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление статуса транзакции",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"a20ad6f6-5bf1-4212-8d94-077c875aea02\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-statuses",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-statuses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransactionCategories",
+			"item": [
+				{
+					"name": "Список категорий транзакций",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-categories",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Категория транзакции по Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-categories/b74f5967-7fe5-4c8c-bb41-95cc3569f1f5",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-categories",
+								"b74f5967-7fe5-4c8c-bb41-95cc3569f1f5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Список категорий для направления",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-categories?directionId=f6d50908-a734-4d77-8cf8-b7ff7ccb4f89",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-categories"
+							],
+							"query": [
+								{
+									"key": "directionId",
+									"value": "f6d50908-a734-4d77-8cf8-b7ff7ccb4f89"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание категории транзакции",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"DirectionId\": \"f6d50908-a734-4d77-8cf8-b7ff7ccb4f89\",\r\n    \"Name\": \"Кредит\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-categories",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение категории транзакции",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"DirectionId\": \"f6d50908-a734-4d77-8cf8-b7ff7ccb4f89\",\r\n    \"Id\": \"b74f5967-7fe5-4c8c-bb41-95cc3569f1f5\",\r\n    \"Name\": \"Кредит\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-categories",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление категории транзакции",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"b74f5967-7fe5-4c8c-bb41-95cc3569f1f5\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-categories",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransactionDirections",
+			"item": [
+				{
+					"name": "Список направлений транзакций",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-directions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-directions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Направление транзакции по Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-directions/5133bc6c-0bae-4d92-b9dd-b121cdbdb928",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-directions",
+								"5133bc6c-0bae-4d92-b9dd-b121cdbdb928"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание напраления транзакции",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Личные\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-directions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-directions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение напраления транзакции",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"5133bc6c-0bae-4d92-b9dd-b121cdbdb928\",\r\n    \"Name\": \"Автосервис\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-directions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-directions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление напраления транзакции",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"5133bc6c-0bae-4d92-b9dd-b121cdbdb928\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-directions",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-directions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransactionTags",
+			"item": [
+				{
+					"name": "Список тегов",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-tags",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Тег по Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-tags/8ab139f7-03f2-439e-a051-ebca57f311ba",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-tags",
+								"8ab139f7-03f2-439e-a051-ebca57f311ba"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Создание тега",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Долг\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-tags",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Изменение тега",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"8ab139f7-03f2-439e-a051-ebca57f311ba\",\r\n    \"Name\": \"Долг\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-tags",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление тега",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Id\": \"8ab139f7-03f2-439e-a051-ebca57f311ba\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7062/api/transaction-tags",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7062",
+							"path": [
+								"api",
+								"transaction-tags"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Аутентифиция под админом",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"UserName\": \"admin\",\r\n    \"Password\": \"f0l2t%8W\"\r\n}"
+				},
+				"url": {
+					"raw": "https://localhost:7062/api/authentication/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7062",
+					"path": [
+						"api",
+						"authentication",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

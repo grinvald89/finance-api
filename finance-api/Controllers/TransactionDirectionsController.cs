@@ -26,14 +26,21 @@ namespace finance_api.Controllers
         [HttpGet("{id}")]
         public TransactionDirection? Get(Guid id)
         {
-            List<TransactionDirection> directions = _dbContext.TransactionDirections.ToList().FindAll(c => !c.Deleted);
+            // Todo: проверка на id и существование направления
+
+            List<TransactionDirection> directions =
+                _dbContext.TransactionDirections
+                    .ToList()
+                    .FindAll(c => !c.Deleted);
 
             return directions.Find(t => t.Id == id);
         }
 
-        [HttpPost]
-        public IActionResult Post(TransactionDirectionCreateRequest request)
+        [HttpPut]
+        public IActionResult Put(TransactionDirectionRequest request)
         {
+            // Todo: проверка на существование направления
+
             TransactionDirection direction = new TransactionDirection()
             {
                 Deleted = false,
@@ -47,9 +54,50 @@ namespace finance_api.Controllers
             return Ok(direction);
         }
 
-        public class TransactionDirectionCreateRequest
+        [HttpPost]
+        public IActionResult Post(TransactionDirectionRequest request)
         {
+            // Todo: проверка на id и существование направления
+
+            TransactionDirection direction =
+                _dbContext.TransactionDirections
+                    .ToList()
+                    .FindAll(t => !t.Deleted)
+                    .Find(t => Guid.Equals(t.Id, request.Id));
+
+            direction.Name = request.Name;
+
+            _dbContext.SaveChanges();
+
+            return Ok(direction);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(TransactionDirectionIdRequest request)
+        {
+            // Todo: проверка на id и существование направления
+
+            TransactionDirection direction =
+                _dbContext.TransactionDirections
+                    .ToList()
+                    .Find(t => Guid.Equals(t.Id, request.Id));
+
+            direction.Deleted = !direction.Deleted;
+
+            _dbContext.SaveChanges();
+
+            return Ok(direction);
+        }
+
+        public class TransactionDirectionRequest
+        {
+            public Guid Id { get; set; }
             public string Name { get; set; }
+        }
+
+        public class TransactionDirectionIdRequest
+        {
+            public Guid Id { get; set; }
         }
     }
 }

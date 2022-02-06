@@ -20,21 +20,30 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<TransactionType> Get()
         {
-            return _dbContext.TransactionTypes.ToList().FindAll(t => !t.Deleted);
+            return _dbContext.TransactionTypes
+                .ToList()
+                .FindAll(t => !t.Deleted);
         }
 
         [HttpGet("{id}")]
         public TransactionType? Get(Guid id)
         {
-            List<TransactionType> types = _dbContext.TransactionTypes.ToList().FindAll(t => !t.Deleted);
+            // Todo: проверка на id и существование типа
+
+            List<TransactionType> types =
+                _dbContext.TransactionTypes
+                    .ToList()
+                    .FindAll(t => !t.Deleted);
 
             return types.Find(t => t.Id == id);
         }
 
-        [HttpPost]
-        public IActionResult Post(TransactionTypeCreateRequest request)
+        [HttpPut]
+        public IActionResult Put(TransactionTypeRequest request)
         {
-            bool isTypeExist = _dbContext.TransactionTypes.ToList()
+            bool isTypeExist = _dbContext.TransactionTypes
+                .ToList()
+                .FindAll(t => !t.Deleted)
                 .Find(t => t.Name == request.Name) != null;
 
             if (isTypeExist)
@@ -55,9 +64,49 @@ namespace finance_api.Controllers
             return Ok(type);
         }
 
-        public class TransactionTypeCreateRequest
+        [HttpPost]
+        public IActionResult Post(TransactionTypeRequest request)
         {
+            // Todo: проверка на id и существование типа
+
+            TransactionType type =
+                _dbContext.TransactionTypes
+                    .ToList()
+                    .FindAll(t => !t.Deleted)
+                    .Find(t => Guid.Equals(t.Id, request.Id));
+
+            type.Name = request.Name;
+
+            _dbContext.SaveChanges();
+
+            return Ok(type);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(TransactionTypeIdRequest request)
+        {
+            // Todo: проверка на id и существование типа
+
+            TransactionType type =
+                _dbContext.TransactionTypes
+                    .ToList()
+                    .Find(t => Guid.Equals(t.Id, request.Id));
+
+            type.Deleted = !type.Deleted;
+
+            _dbContext.SaveChanges();
+
+            return Ok(type);
+        }
+
+        public class TransactionTypeRequest
+        {
+            public Guid Id { get; set; }
             public string Name { get; set; }
+        }
+        public class TransactionTypeIdRequest
+        {
+            public Guid Id { get; set; }
         }
     }
 }

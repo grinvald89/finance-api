@@ -39,6 +39,8 @@ namespace finance_api.Controllers
         [HttpGet("{id}")]
         public Transaction? Get(Guid id)
         {
+            // Todo: проверка на id и существование транзакции
+
             List<Transaction> transactions = _dbContext.Transactions
                 .Include(t => t.Direction)
                 .Include(t => t.Category)
@@ -102,7 +104,7 @@ namespace finance_api.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(TransactionId request)
+        public IActionResult Delete(TransactionIdRequest request)
         {
             // Todo: проверка на id и существование транзакции
 
@@ -201,7 +203,7 @@ namespace finance_api.Controllers
         public Guid TypeId { get; set; }
     }
 
-    public class TransactionId
+    public class TransactionIdRequest
     {
         public Guid Id { get; set; }
     }

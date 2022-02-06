@@ -36,6 +36,8 @@ namespace finance_api.Controllers
         [HttpGet("{id}")]
         public User? Get(Guid id)
         {
+            // Todo: проверка на id и существование пользователя
+
             List<User> users =
                 _dbContext.Users
                     .Include(u => u.Authorization)
@@ -50,6 +52,9 @@ namespace finance_api.Controllers
         [HttpPut]
         public IActionResult Put(UserRequest request)
         {
+
+            // Todo: Добавить проверку на существавание пользователя по UserLogin
+
             User user = new User()
             {
                 Deleted = false,
@@ -69,6 +74,8 @@ namespace finance_api.Controllers
         [HttpPost]
         public IActionResult Post(UserRequest request)
         {
+            // Todo: проверка на id и существование пользователя
+
             User user =
                 _dbContext.Users
                     .Include(u => u.Authorization)
@@ -93,6 +100,8 @@ namespace finance_api.Controllers
         [HttpDelete]
         public IActionResult Delete(UserId request)
         {
+            // Todo: проверка на id и существование пользователя
+
             User user =
                 _dbContext.Users
                     .ToList()

@@ -28,6 +28,8 @@ namespace finance_api.Controllers
         [HttpGet("{id}")]
         public UserRole? Get(Guid id)
         {
+            // Todo: проверка на id и существование пользователя
+
             List<UserRole> roles =
                 _dbContext.UserRoles
                     .ToList()
@@ -39,6 +41,8 @@ namespace finance_api.Controllers
         [HttpPut]
         public IActionResult Put(UserRoleRequest request)
         {
+            // Todo: Добавить проверку на существавание роли по Name
+
             UserRole role = new UserRole()
             {
                 Deleted = false,

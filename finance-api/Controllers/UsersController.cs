@@ -26,7 +26,8 @@ namespace finance_api.Controllers
                     .Include(u => u.Authorization)
                     .Include(u => u.FullName)
                     .Include(u => u.Roles)
-                    .ToList();
+                    .ToList()
+                    .FindAll(u => !u.Deleted);
 
             return Ok(users);
         }
@@ -40,13 +41,14 @@ namespace finance_api.Controllers
                     .Include(u => u.Authorization)
                     .Include(u => u.FullName)
                     .Include(u => u.Roles)
-                    .ToList().FindAll(c => !c.Deleted);
+                    .ToList()
+                    .FindAll(c => !c.Deleted);
 
             return users.Find(t => t.Id == id);
         }
 
         [HttpPut]
-        public IActionResult Put(UserCreateRequest request)
+        public IActionResult Put(UserRequest request)
         {
             User user = new User()
             {
@@ -64,25 +66,44 @@ namespace finance_api.Controllers
             return Ok(user);
         }
 
-        /*
         [HttpPost]
-        public IActionResult Post(UserCreateRequest request)
+        public IActionResult Post(UserRequest request)
         {
-            Guid id = Guid.Parse("45e6d487-39b9-48b3-8c78-02ed928cb8f9");
-            UserFullName? fullname = _dbContext.UserFullNames.ToList()
-                .Find(u => Guid.Equals(u.Id, id));
+            User user =
+                _dbContext.Users
+                    .Include(u => u.Authorization)
+                    .Include(u => u.FullName)
+                    .Include(u => u.Roles)
+                    .ToList()
+                    .FindAll(u => !u.Deleted)
+                    .Find(u => Guid.Equals(u.Id, request.Id));
 
-            if (fullname != null)
-            {
-                fullname.FirstName = "Admin";
-                fullname.LastName = "Admin";
-                fullname.MiddleName = "Admin";
-                _dbContext.UserFullNames.Update(fullname);
-            }
+            user.FullName.FirstName = request.FirstName;
+            user.FullName.LastName = request.LastName;
+            user.FullName.MiddleName = request.MiddleName;
+            user.Roles = GetRolesByIds(request.RoleIds);
+            user.Authorization.UserName = request.UserName;
+            user.Authorization.Password = request.Password;
+
+            _dbContext.SaveChanges();
 
             return Ok(user);
         }
-        */
+
+        [HttpDelete]
+        public IActionResult Delete(UserId request)
+        {
+            User user =
+                _dbContext.Users
+                    .ToList()
+                    .Find(u => Guid.Equals(u.Id, request.Id));
+
+            user.Deleted = true;
+
+            _dbContext.SaveChanges();
+
+            return Ok(user);
+        }
 
         private UserAuthorization CreateAuthorization(string userName, string password)
         {
@@ -133,14 +154,20 @@ namespace finance_api.Controllers
             return userRoles;
         }
 
-        public class UserCreateRequest
+        public class UserRequest
         {
             public string FirstName { get; set; }
+            public Guid Id { get; set; }
             public string LastName { get; set; }
             public string MiddleName { get; set; }
             public string Password { get; set; }
             public List<string> RoleIds { get; set; }
             public string UserName { get; set; }
+        }
+
+        public class UserId
+        {
+            public Guid Id { get; set; }
         }
     }
 }

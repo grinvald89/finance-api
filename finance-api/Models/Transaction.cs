@@ -25,7 +25,7 @@ namespace finance_api.Models
         public TransactionCategory Category { get; set; }
 
         // Теги
-        public TransactionTag[] Tags { get; set; }
+        public List<TransactionTag> Tags { get; set; }
 
         // Опция для подкатегории первого уровня
         public string Comment { get; set; }

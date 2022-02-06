@@ -8,8 +8,7 @@ using System.Linq;
 
 namespace finance_api.Controllers
 {
-    /*
-    [Route("api/transaction-types")]
+    [Route("api/transactions")]
     [ApiController]
     public class TransactionsController : ControllerBase
     {
@@ -24,15 +23,15 @@ namespace finance_api.Controllers
         public List<Transaction> Get()
         {
             List<Transaction> transactions = _dbContext.Transactions
+                .Include(t => t.Direction)
                 .Include(t => t.Category)
-                .Include(t => t.CategoryOption)
                 .Include(t => t.Payer)
+                .Include(t => t.Payer.FullName)
                 .Include(t => t.Status)
-                .Include(t => t.SubCategory)
-                .Include(t => t.SubCategoryFirstOption)
-                .Include(t => t.SubCategorySecondOption)
+                .Include(t => t.Tags)
                 .Include(t => t.Type)
-                .ToList();
+                .ToList()
+                .FindAll(t => t.Deleted == false); ;
 
             return transactions;
         }
@@ -41,32 +40,31 @@ namespace finance_api.Controllers
         public Transaction? Get(Guid id)
         {
             List<Transaction> transactions = _dbContext.Transactions
+                .Include(t => t.Direction)
                 .Include(t => t.Category)
-                .Include(t => t.CategoryOption)
                 .Include(t => t.Payer)
+                .Include(t => t.Payer.FullName)
                 .Include(t => t.Status)
-                .Include(t => t.SubCategory)
-                .Include(t => t.SubCategoryFirstOption)
-                .Include(t => t.SubCategorySecondOption)
+                .Include(t => t.Tags)
                 .Include(t => t.Type)
-                .ToList();
+                .ToList()
+                .FindAll(t => t.Deleted == false);
 
             return transactions.Find(t => t.Id == id);
         }
 
-        [HttpPost]
-        public IActionResult Post(ITransactionCreateRequest request)
+        [HttpPut]
+        public IActionResult Put(TransactionRequest request)
         {
             Transaction transaction = new Transaction()
             {
                 Category = GetCategoryById(request.CategoryId),
-                CategoryOption = GetCategoryOptionById(request.CategoryOptionId),
+                Comment = request.Comment,
+                Direction = GetDirectionById(request.DirectionId),
                 Id = Guid.NewGuid(),
                 Payer = GetPayerById(request.PayerId),
                 Status = GetStatusById(request.StatusId),
-                SubCategory = GetSubCategoryById(request.SubCategoryId),
-                SubCategoryFirstOption = GetSubCategoryFirstOptionById(request.SubCategoryFirstOptionId),
-                SubCategorySecondOption = GetSubCategorySecondOptionById(request.SubCategorySecondOptionId),
+                Tags = GetTagsByIds(request.TagIds),
                 TransactionDate = request.TransactionDate,
                 Type = GetTypeById(request.TypeId)
             };
@@ -77,88 +75,134 @@ namespace finance_api.Controllers
             return Ok(transaction);
         }
 
+        [HttpPost]
+        public IActionResult Post(TransactionRequest request)
+        {
+            // Todo: проверка на id и существование транзакции
+
+            Transaction transaction =
+                _dbContext.Transactions
+                    .Include(t => t.Payer.FullName)
+                    .ToList()
+                    .FindAll(t => t.Deleted == false)
+                    .Find(t => Guid.Equals(t.Id, request.Id));
+
+            transaction.Category = GetCategoryById(request.CategoryId);
+            transaction.Comment = request.Comment;
+            transaction.Direction = GetDirectionById(request.DirectionId);
+            transaction.Payer = GetPayerById(request.PayerId);
+            transaction.Status = GetStatusById(request.StatusId);
+            transaction.Tags = GetTagsByIds(request.TagIds);
+            transaction.TransactionDate = request.TransactionDate;
+            transaction.Type = GetTypeById(request.TypeId);
+
+            _dbContext.SaveChanges();
+
+            return Ok(transaction);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(TransactionId request)
+        {
+            // Todo: проверка на id и существование транзакции
+
+            Transaction transaction =
+                _dbContext.Transactions
+                    .Include(t => t.Payer.FullName)
+                    .ToList()
+                    .FindAll(t => t.Deleted == false)
+                    .Find(t => Guid.Equals(t.Id, request.Id));
+
+            transaction.Deleted = true;
+            _dbContext.SaveChanges();
+
+            return Ok(transaction);
+        }
+
+        private TransactionDirection? GetDirectionById(Guid id)
+        {
+            List<TransactionDirection> directions =
+                _dbContext.TransactionDirections
+                .ToList()
+                .FindAll(t => t.Deleted == false);
+
+            return directions.Find(c => c.Id == id);
+        }
+
         private TransactionCategory? GetCategoryById(Guid id)
         {
-            List<TransactionCategory> categories = _dbContext.TransactionCategories.ToList();
+            List<TransactionCategory> categories =
+                _dbContext.TransactionCategories
+                    .ToList()
+                    .FindAll(t => t.Deleted == false);
 
             return categories.Find(c => c.Id == id);
         }
-        private TransactionCategoryOption? GetCategoryOptionById(Guid? id)
-        {
-            if (id == null)
-            {
-                return null;
-            }
 
-            List<TransactionCategoryOption> categoryOptions = _dbContext.TransactionCategoryOptions.ToList();
-
-            return categoryOptions.Find(c => c.Id == id);
-        }
         private User? GetPayerById(Guid id)
         {
-            List<User> users = _dbContext.Users.ToList();
+            List<User> users =
+                _dbContext.Users
+                    .Include(t => t.FullName)
+                    .ToList()
+                    .FindAll(t => t.Deleted == false);
 
             return users.Find(c => c.Id == id);
         }
+
         private TransactionStatus? GetStatusById(Guid id)
         {
-            List<TransactionStatus> statuses = _dbContext.TransactionStatuses.ToList();
+            List<TransactionStatus> statuses =
+                _dbContext.TransactionStatuses
+                    .ToList()
+                    .FindAll(t => t.Deleted == false);
 
             return statuses.Find(c => c.Id == id);
         }
-        private TransactionSubCategory? GetSubCategoryById(Guid? id)
+
+        private List<TransactionTag>? GetTagsByIds(Guid[]? ids)
         {
-            if (id == null)
+            if (ids == null || ids.Length == 0)
             {
                 return null;
             }
 
-            List<TransactionSubCategory> subCategories = _dbContext.TransactionSubCategories.ToList();
+            List<TransactionTag> tags =
+                _dbContext.TransactionTags
+                    .ToList()
+                    .FindAll(t => t.Deleted == false);
 
-            return subCategories.Find(c => c.Id == id);
+            List<TransactionTag> result = tags.FindAll(c => ids.Contains(c.Id));
+
+            return result;
         }
-        private TransactionSubCategoryFirstOption? GetSubCategoryFirstOptionById(Guid? id)
-        {
-            if (id == null)
-            {
-                return null;
-            }
 
-            List<TransactionSubCategoryFirstOption> subCategoryFirstOptions = _dbContext.TransactionSubCategoryFirstOptions.ToList();
-
-            return subCategoryFirstOptions.Find(c => c.Id == id);
-        }
-        private TransactionSubCategorySecondOption? GetSubCategorySecondOptionById(Guid? id)
-        {
-            if (id == null)
-            {
-                return null;
-            }
-
-            List<TransactionSubCategorySecondOption> subCategorySecondOptions = _dbContext.TransactionSubCategorySecondOptions.ToList();
-
-            return subCategorySecondOptions.Find(c => c.Id == id);
-        }
         private TransactionType? GetTypeById(Guid id)
         {
-            List<TransactionType> types = _dbContext.TransactionTypes.ToList();
+            List<TransactionType> types =
+                _dbContext.TransactionTypes
+                    .ToList()
+                    .FindAll(t => t.Deleted == false);
 
             return types.Find(c => c.Id == id);
         }
     }
 
-    public interface ITransactionCreateRequest
+    public class TransactionRequest
     {
         public Guid CategoryId { get; set; }
-        public Guid? CategoryOptionId { get; set; }
+        public string Comment { get; set; }
+        public Guid DirectionId { get; set; }
+        public Guid Id { get; set; }
         public Guid PayerId { get; set; }
         public Guid StatusId { get; set; }
-        public Guid? SubCategoryId { get; set; }
-        public Guid? SubCategoryFirstOptionId { get; set; }
-        public Guid? SubCategorySecondOptionId { get; set; }
         public DateTime TransactionDate { get; set; }
+        public Guid[] TagIds { get; set; }
         public Guid TypeId { get; set; }
-
     }
-    */
+
+    public class TransactionId
+    {
+        public Guid Id { get; set; }
+    }
 }

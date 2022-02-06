@@ -20,20 +20,29 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<TransactionTag> Get()
         {
-            return _dbContext.TransactionTags.ToList().FindAll(c => !c.Deleted);
+            return _dbContext.TransactionTags
+                .ToList()
+                .FindAll(c => !c.Deleted);
         }
 
         [HttpGet("{id}")]
         public TransactionTag? Get(Guid id)
         {
-            List<TransactionTag> tags = _dbContext.TransactionTags.ToList().FindAll(c => !c.Deleted);
+            // Todo: проверка на id и существование тега
+
+            List<TransactionTag> tags =
+                _dbContext.TransactionTags
+                    .ToList()
+                    .FindAll(c => !c.Deleted);
 
             return tags.Find(t => t.Id == id);
         }
 
-        [HttpPost]
-        public IActionResult Post(TransactionTagCreateRequest request)
+        [HttpPut]
+        public IActionResult Put(TransactionTagRequest request)
         {
+            // Todo: проверка на существование тега
+
             TransactionTag tag = new TransactionTag()
             {
                 Deleted = false,
@@ -47,9 +56,50 @@ namespace finance_api.Controllers
             return Ok(tag);
         }
 
-        public class TransactionTagCreateRequest
+        [HttpPost]
+        public IActionResult Post(TransactionTagRequest request)
         {
+            // Todo: проверка на id и существование тега
+
+            TransactionTag tag =
+                _dbContext.TransactionTags
+                    .ToList()
+                    .FindAll(t => !t.Deleted)
+                    .Find(t => Guid.Equals(t.Id, request.Id));
+
+            tag.Name = request.Name;
+
+            _dbContext.SaveChanges();
+
+            return Ok(tag);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(TransactionTagIdRequest request)
+        {
+            // Todo: проверка на id и существование тега
+
+            TransactionTag tag =
+                _dbContext.TransactionTags
+                    .ToList()
+                    .Find(t => Guid.Equals(t.Id, request.Id));
+
+            tag.Deleted = true;
+
+            _dbContext.SaveChanges();
+
+            return Ok(tag);
+        }
+
+        public class TransactionTagRequest
+        {
+            public Guid Id { get; set; }
             public string Name { get; set; }
+        }
+
+        public class TransactionTagIdRequest
+        {
+            public Guid Id { get; set; }
         }
     }
 }

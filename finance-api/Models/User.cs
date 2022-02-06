@@ -9,9 +9,6 @@ namespace finance_api.Models
         public Guid Id { get; set; }
         public UserFullName FullName { get; set; }
         public DateTime CreationDate { get; set; }
-        public List<BusinessAccount> BusinessAccounts { get; set; }
-        public PersonalAccount PersonalAccount { get; set; }
-        public FamilyAccount FamilyAccount { get; set; }
         public List<UserRole> Roles { get; set; }
         public UserAuthorization Authorization { get; set; }
         public bool Deleted { get; set; }

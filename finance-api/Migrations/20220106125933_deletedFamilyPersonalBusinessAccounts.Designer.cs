@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using finance_api.Data;
 
@@ -11,9 +12,10 @@ using finance_api.Data;
 namespace finance_api.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    partial class FinanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220106125933_deletedFamilyPersonalBusinessAccounts")]
+    partial class deletedFamilyPersonalBusinessAccounts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,20 +51,25 @@ namespace finance_api.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CategoryOptionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
-
-                    b.Property<Guid>("DirectionId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PayerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("StatusId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubCategoryFirstOptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubCategorySecondOptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TransactionDate")
@@ -75,11 +82,17 @@ namespace finance_api.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("DirectionId");
+                    b.HasIndex("CategoryOptionId");
 
                     b.HasIndex("PayerId");
 
                     b.HasIndex("StatusId");
+
+                    b.HasIndex("SubCategoryFirstOptionId");
+
+                    b.HasIndex("SubCategoryId");
+
+                    b.HasIndex("SubCategorySecondOptionId");
 
                     b.HasIndex("TypeId");
 
@@ -95,9 +108,6 @@ namespace finance_api.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("DirectionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -107,10 +117,13 @@ namespace finance_api.Migrations
                     b.ToTable("TransactionCategories");
                 });
 
-            modelBuilder.Entity("finance_api.Models.TransactionDirection", b =>
+            modelBuilder.Entity("finance_api.Models.TransactionCategoryOption", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Deleted")
@@ -122,10 +135,34 @@ namespace finance_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TransactionDirections");
+                    b.ToTable("TransactionCategoryOptions");
                 });
 
-            modelBuilder.Entity("finance_api.Models.TransactionTag", b =>
+            modelBuilder.Entity("finance_api.Models.TransactionSubCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryOptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionSubCategories");
+                });
+
+            modelBuilder.Entity("finance_api.Models.TransactionSubCategoryFirstOption", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -138,14 +175,36 @@ namespace finance_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("TransactionId")
+                    b.Property<Guid>("SubCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TransactionId");
+                    b.ToTable("TransactionSubCategoryFirstOptions");
+                });
 
-                    b.ToTable("TransactionTags");
+            modelBuilder.Entity("finance_api.Models.TransactionSubCategorySecondOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SubCategoryFirstOptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransactionSubCategorySecondOptions");
                 });
 
             modelBuilder.Entity("finance_api.Models.TransactionType", b =>
@@ -281,9 +340,9 @@ namespace finance_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("finance_api.Models.TransactionDirection", "Direction")
+                    b.HasOne("finance_api.Models.TransactionCategoryOption", "CategoryOption")
                         .WithMany()
-                        .HasForeignKey("DirectionId")
+                        .HasForeignKey("CategoryOptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -299,6 +358,24 @@ namespace finance_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("finance_api.Models.TransactionSubCategoryFirstOption", "SubCategoryFirstOption")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryFirstOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Models.TransactionSubCategory", "SubCategory")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("finance_api.Models.TransactionSubCategorySecondOption", "SubCategorySecondOption")
+                        .WithMany()
+                        .HasForeignKey("SubCategorySecondOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("finance_api.Models.TransactionType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")
@@ -307,20 +384,19 @@ namespace finance_api.Migrations
 
                     b.Navigation("Category");
 
-                    b.Navigation("Direction");
+                    b.Navigation("CategoryOption");
 
                     b.Navigation("Payer");
 
                     b.Navigation("Status");
 
-                    b.Navigation("Type");
-                });
+                    b.Navigation("SubCategory");
 
-            modelBuilder.Entity("finance_api.Models.TransactionTag", b =>
-                {
-                    b.HasOne("finance_api.Models.Transaction", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("TransactionId");
+                    b.Navigation("SubCategoryFirstOption");
+
+                    b.Navigation("SubCategorySecondOption");
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("finance_api.Models.User", b =>
@@ -347,11 +423,6 @@ namespace finance_api.Migrations
                     b.HasOne("finance_api.Models.User", null)
                         .WithMany("Roles")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("finance_api.Models.Transaction", b =>
-                {
-                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("finance_api.Models.User", b =>

@@ -79,20 +79,6 @@ namespace finance_api.Controllers
                 UserName = adminLogin.UserName
             };
 
-            FamilyAccount familyAccount = new FamilyAccount()
-            {
-                Deleted = false,
-                Id = Guid.NewGuid(),
-                Name = "",
-            };
-
-            PersonalAccount personalAccount = new PersonalAccount()
-            {
-                Deleted = false,
-                Id = Guid.NewGuid(),
-                Name = ""
-            };
-
             UserFullName fullName = new UserFullName()
             {
                 Deleted = false,
@@ -105,13 +91,10 @@ namespace finance_api.Controllers
             User userForDB = new User()
             {
                 Authorization = authorization,
-                BusinessAccounts = new List<BusinessAccount>(),
                 CreationDate = DateTime.Now,
                 Deleted = false,
-                FamilyAccount = familyAccount,
                 FullName = fullName,
                 Id = Guid.NewGuid(),
-                PersonalAccount = personalAccount,
                 Roles = new List<UserRole>() { GetOrCreateAdminRole() }
             };
 

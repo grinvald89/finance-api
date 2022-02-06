@@ -6,32 +6,30 @@ namespace finance_api.Models
     {
         public Guid Id { get; set; }
         
-        // Дата транзакции
+        // Дата
         public DateTime TransactionDate { get; set; }
 
         // Плательщик
         public User Payer { get; set; }
 
-        // Статус транзакции (исполнено/запланировано)
+        // Статус (исполнено/запланировано)
         public TransactionStatus Status { get; set; }
 
-        // Тип транзакции (приход/расход)
+        // Тип (приход/расход)
         public TransactionType Type { get; set; }
 
-        // Категория транзакции (личная/семейная/бизнес)
+        // Направление (личное/семейное/бизнес)
+        public TransactionDirection Direction { get; set; }
+
+        // Категория
         public TransactionCategory Category { get; set; }
 
-        // Опция для категории
-        public TransactionCategoryOption CategoryOption { get; set; }
-
-        // Подкатегория транзакции
-        public TransactionSubCategory SubCategory { get; set; }
+        // Теги
+        public TransactionTag[] Tags { get; set; }
 
         // Опция для подкатегории первого уровня
-        public TransactionSubCategoryFirstOption SubCategoryFirstOption { get; set; }
+        public string Comment { get; set; }
 
-        // Опция для подкатегории второго уровня
-        public TransactionSubCategorySecondOption SubCategorySecondOption { get; set; }
         public bool Deleted { get; set; }
     }
 }

@@ -20,7 +20,18 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<TransactionCategory> Get()
         {
-            return _dbContext.TransactionCategories.ToList().FindAll(c => !c.Deleted);
+            string? queryDirectionId = HttpContext.Request.Query["directionId"];
+            Guid directionId;
+
+            if (queryDirectionId == null)
+            {
+                return _dbContext.TransactionCategories.ToList().FindAll(c => !c.Deleted);
+            }
+
+            directionId = Guid.Parse(queryDirectionId);
+
+            return _dbContext.TransactionCategories.ToList()
+                .FindAll(c => !c.Deleted && Guid.Equals(c.DirectionId, directionId));
         }
 
         [HttpGet("{id}")]
@@ -37,6 +48,7 @@ namespace finance_api.Controllers
             TransactionCategory category = new TransactionCategory()
             {
                 Deleted = false,
+                DirectionId = request.DirectionId,
                 Id = Guid.NewGuid(),
                 Name = request.Name
             };
@@ -49,6 +61,7 @@ namespace finance_api.Controllers
 
         public class TransactionCategoryCreateRequest
         {
+            public Guid DirectionId { get; set; }
             public string Name { get; set; }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace finance_api.Models
 {
-    public class BusinessAccount
+    public class TransactionDirection
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

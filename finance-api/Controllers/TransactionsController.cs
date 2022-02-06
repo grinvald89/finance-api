@@ -31,7 +31,7 @@ namespace finance_api.Controllers
                 .Include(t => t.Tags)
                 .Include(t => t.Type)
                 .ToList()
-                .FindAll(t => t.Deleted == false); ;
+                .FindAll(t => !t.Deleted); ;
 
             return transactions;
         }
@@ -50,7 +50,7 @@ namespace finance_api.Controllers
                 .Include(t => t.Tags)
                 .Include(t => t.Type)
                 .ToList()
-                .FindAll(t => t.Deleted == false);
+                .FindAll(t => !t.Deleted);
 
             return transactions.Find(t => t.Id == id);
         }
@@ -86,7 +86,7 @@ namespace finance_api.Controllers
                 _dbContext.Transactions
                     .Include(t => t.Payer.FullName)
                     .ToList()
-                    .FindAll(t => t.Deleted == false)
+                    .FindAll(t => !t.Deleted)
                     .Find(t => Guid.Equals(t.Id, request.Id));
 
             transaction.Category = GetCategoryById(request.CategoryId);
@@ -112,7 +112,6 @@ namespace finance_api.Controllers
                 _dbContext.Transactions
                     .Include(t => t.Payer.FullName)
                     .ToList()
-                    .FindAll(t => t.Deleted == false)
                     .Find(t => Guid.Equals(t.Id, request.Id));
 
             transaction.Deleted = true;
@@ -126,7 +125,7 @@ namespace finance_api.Controllers
             List<TransactionDirection> directions =
                 _dbContext.TransactionDirections
                 .ToList()
-                .FindAll(t => t.Deleted == false);
+                .FindAll(t => !t.Deleted);
 
             return directions.Find(c => c.Id == id);
         }
@@ -136,7 +135,7 @@ namespace finance_api.Controllers
             List<TransactionCategory> categories =
                 _dbContext.TransactionCategories
                     .ToList()
-                    .FindAll(t => t.Deleted == false);
+                    .FindAll(t => !t.Deleted);
 
             return categories.Find(c => c.Id == id);
         }
@@ -147,7 +146,7 @@ namespace finance_api.Controllers
                 _dbContext.Users
                     .Include(t => t.FullName)
                     .ToList()
-                    .FindAll(t => t.Deleted == false);
+                    .FindAll(t => !t.Deleted);
 
             return users.Find(c => c.Id == id);
         }
@@ -157,7 +156,7 @@ namespace finance_api.Controllers
             List<TransactionStatus> statuses =
                 _dbContext.TransactionStatuses
                     .ToList()
-                    .FindAll(t => t.Deleted == false);
+                    .FindAll(t => !t.Deleted);
 
             return statuses.Find(c => c.Id == id);
         }
@@ -172,7 +171,7 @@ namespace finance_api.Controllers
             List<TransactionTag> tags =
                 _dbContext.TransactionTags
                     .ToList()
-                    .FindAll(t => t.Deleted == false);
+                    .FindAll(t => !t.Deleted);
 
             List<TransactionTag> result = tags.FindAll(c => ids.Contains(c.Id));
 
@@ -184,7 +183,7 @@ namespace finance_api.Controllers
             List<TransactionType> types =
                 _dbContext.TransactionTypes
                     .ToList()
-                    .FindAll(t => t.Deleted == false);
+                    .FindAll(t => !t.Deleted);
 
             return types.Find(c => c.Id == id);
         }

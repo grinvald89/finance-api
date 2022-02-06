@@ -20,6 +20,8 @@ namespace finance_api.Controllers
         [HttpGet]
         public List<TransactionCategory> Get()
         {
+            // Todo: проверка на id и существование направления (direction)
+
             string? queryDirectionId = HttpContext.Request.Query["directionId"];
             Guid directionId;
 
@@ -37,14 +39,21 @@ namespace finance_api.Controllers
         [HttpGet("{id}")]
         public TransactionCategory? Get(Guid id)
         {
-            List<TransactionCategory> categories = _dbContext.TransactionCategories.ToList().FindAll(c => !c.Deleted);
+            // Todo: проверка на id и существование категории
+
+            List<TransactionCategory> categories =
+                _dbContext.TransactionCategories
+                    .ToList()
+                    .FindAll(c => !c.Deleted);
 
             return categories.Find(t => t.Id == id);
         }
 
-        [HttpPost]
-        public IActionResult Post(TransactionCategoryCreateRequest request)
+        [HttpPut]
+        public IActionResult Put(TransactionCategoryRequest request)
         {
+            // Todo: проверка на существование категории
+
             TransactionCategory category = new TransactionCategory()
             {
                 Deleted = false,
@@ -59,10 +68,52 @@ namespace finance_api.Controllers
             return Ok(category);
         }
 
-        public class TransactionCategoryCreateRequest
+        [HttpPost]
+        public IActionResult Post(TransactionCategoryRequest request)
+        {
+            // Todo: проверка на id и существование категории
+
+            TransactionCategory category =
+                _dbContext.TransactionCategories
+                    .ToList()
+                    .FindAll(c => !c.Deleted)
+                    .Find(c => Guid.Equals(c.Id, request.Id));
+
+            category.Name = request.Name;
+            category.DirectionId = request.DirectionId;
+
+            _dbContext.SaveChanges();
+
+            return Ok(category);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(TransactionCategoryIdRequest request)
+        {
+            // Todo: проверка на id и существование категории
+
+            TransactionCategory category =
+                _dbContext.TransactionCategories
+                    .ToList()
+                    .Find(c => Guid.Equals(c.Id, request.Id));
+
+            category.Deleted = !category.Deleted;
+
+            _dbContext.SaveChanges();
+
+            return Ok(category);
+        }
+
+        public class TransactionCategoryRequest
         {
             public Guid DirectionId { get; set; }
+            public Guid Id { get; set; }
             public string Name { get; set; }
+        }
+
+        public class TransactionCategoryIdRequest
+        {
+            public Guid Id { get; set; }
         }
     }
 }

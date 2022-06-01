@@ -7,7 +7,7 @@ namespace finance_api.Models
         public Guid Id { get; set; }
         
         // Дата
-        public DateTime TransactionDate { get; set; }
+        public DateTime Date { get; set; }
 
         // Плательщик
         public User Payer { get; set; }
@@ -27,8 +27,11 @@ namespace finance_api.Models
         // Теги
         public List<TransactionTag> Tags { get; set; }
 
-        // Опция для подкатегории первого уровня
+        // Комментарий
         public string Comment { get; set; }
+
+        // Сумма
+        public float Summ { get; set; }
 
         public bool Deleted { get; set; }
     }

@@ -3,6 +3,7 @@ using finance_api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,7 +21,7 @@ namespace finance_api.Controllers
         }
 
         [HttpGet]
-        public List<Transaction> Get()
+        public List<Transaction> get()
         {
             List<Transaction> transactions = _dbContext.Transactions
                 .Include(t => t.Direction)
@@ -31,7 +32,47 @@ namespace finance_api.Controllers
                 .Include(t => t.Tags)
                 .Include(t => t.Type)
                 .ToList()
-                .FindAll(t => !t.Deleted); ;
+                .FindAll(t => !t.Deleted);
+
+            string filterQuery = HttpContext.Request.Query["filter"];
+
+            TransactionFilter filter = JsonSerializer.Deserialize<TransactionFilter>(filterQuery);
+
+            if (filter != null)
+            {
+                transactions = transactions
+                    .FindAll(transaction =>
+                    {
+                        bool isDateFromFilter = true;
+
+                        if (filter.period != null)
+                        {
+                            isDateFromFilter = transaction.Date >= filter.period.startDate && transaction.Date <= filter.period.endDate;
+                        }
+
+                        bool isCategoryFromFilter = filter.categoryIds.Contains(transaction.Category.Id);
+                        bool isDirectionFromFilter = filter.directionIds.Contains(transaction.Direction.Id);
+                        bool isPayerFromFilter = filter.payerIds.Contains(transaction.Payer.Id);
+                        bool isStatusFromFilter = filter.statusIds.Contains(transaction.Status.Id);
+                        bool isTypeFromFilter = filter.typeIds.Contains(transaction.Type.Id);
+
+                        bool isTagsFromFilter = filter.tagIds.Length == 0;
+                        transaction.Tags.ForEach(transactionTag =>
+                            {
+                                if (filter.tagIds.Contains(transactionTag.Id)) {
+                                    isTagsFromFilter = true;
+                                }
+                            });
+
+                        return  isDateFromFilter &&
+                                isCategoryFromFilter &&
+                                isDirectionFromFilter &&
+                                isPayerFromFilter &&
+                                isStatusFromFilter &&
+                                isTagsFromFilter &&
+                                isTypeFromFilter;
+                    });
+            }
 
             return transactions;
         }
@@ -62,12 +103,13 @@ namespace finance_api.Controllers
             {
                 Category = GetCategoryById(request.CategoryId),
                 Comment = request.Comment,
+                Date = request.TransactionDate,
                 Direction = GetDirectionById(request.DirectionId),
                 Id = Guid.NewGuid(),
                 Payer = GetPayerById(request.PayerId),
                 Status = GetStatusById(request.StatusId),
+                Summ = request.Summ,
                 Tags = GetTagsByIds(request.TagIds),
-                TransactionDate = request.TransactionDate,
                 Type = GetTypeById(request.TypeId)
             };
 
@@ -91,11 +133,12 @@ namespace finance_api.Controllers
 
             transaction.Category = GetCategoryById(request.CategoryId);
             transaction.Comment = request.Comment;
+            transaction.Date = request.TransactionDate;
             transaction.Direction = GetDirectionById(request.DirectionId);
             transaction.Payer = GetPayerById(request.PayerId);
             transaction.Status = GetStatusById(request.StatusId);
+            transaction.Summ = request.Summ;
             transaction.Tags = GetTagsByIds(request.TagIds);
-            transaction.TransactionDate = request.TransactionDate;
             transaction.Type = GetTypeById(request.TypeId);
 
             _dbContext.SaveChanges();
@@ -189,6 +232,23 @@ namespace finance_api.Controllers
         }
     }
 
+    public class TransactionFilter
+    {
+        public Guid[] categoryIds { get; set; }
+        public Guid[] directionIds { get; set; }
+        public Guid[] payerIds { get; set; }
+        public TransactionFilterPeriod period { get; set; }
+        public Guid[] statusIds { get; set; }
+        public Guid[] tagIds { get; set; }
+        public Guid[] typeIds { get; set; }
+    }
+
+    public class TransactionFilterPeriod
+    {
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set;}
+    }
+
     public class TransactionRequest
     {
         public Guid CategoryId { get; set; }
@@ -197,6 +257,7 @@ namespace finance_api.Controllers
         public Guid Id { get; set; }
         public Guid PayerId { get; set; }
         public Guid StatusId { get; set; }
+        public float Summ { get; set; }
         public DateTime TransactionDate { get; set; }
         public Guid[] TagIds { get; set; }
         public Guid TypeId { get; set; }

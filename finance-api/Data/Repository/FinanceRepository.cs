@@ -28,7 +28,6 @@ namespace finance_api.Data
                     .Include(t => t.Category)
                     .Include(t => t.Direction)
                     .Include(t => t.Status)
-                    .Include(t => t.Tags)
                     .Include(t => t.Type);
 
         public IEnumerable<TransactionCategory> TransactionCategories { get; set; }

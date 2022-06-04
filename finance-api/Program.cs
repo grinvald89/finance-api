@@ -16,9 +16,11 @@ builder.Services.AddDbContext<FinanceDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
+    options.AddPolicy(name: MyAllowSpecificOrigins,
         policy =>
         {
             policy.AllowAnyOrigin()
@@ -36,7 +38,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors();
+app.UseCors(MyAllowSpecificOrigins);
+//app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseHttpsRedirection();
 

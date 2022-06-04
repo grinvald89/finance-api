@@ -34,6 +34,42 @@ namespace finance_api.Controllers
                 .ToList()
                 .FindAll(t => !t.Deleted);
 
+            List<TransactionTag> tags = _dbContext.TransactionTags
+                .ToList()
+                .FindAll(t => !t.Deleted);
+            transactions.ForEach(transaction =>
+            {
+                transaction.Tags = new List<TransactionTag>();
+            });
+
+            transactions.ForEach(transaction =>
+            {
+                if (Guid.Equals(transaction.Id, Guid.Parse("038c0806-8d2e-433e-b77d-bbe04ff42a07")))
+                {
+                    var a = 1;
+                }
+
+                if (transaction.TagIds != null)
+                {
+                    List<string> tagIds = transaction.TagIds.Split(";").ToList();
+                    if (tagIds.Count > 0)
+                    {
+                        tagIds.ForEach(tagId =>
+                        {
+                            if (tagId.Length > 0)
+                            {
+                                TransactionTag tag = tags.Find(tagItem => Guid.Equals(tagItem.Id, Guid.Parse(tagId)));
+                                if (tag != null)
+                                {
+                                    transaction.Tags.Add(tag);
+                                }
+                            }
+                        });
+                    }
+
+                }
+            });
+
             string filterQuery = HttpContext.Request.Query["filter"];
 
             TransactionFilter filter = JsonSerializer.Deserialize<TransactionFilter>(filterQuery);
@@ -99,6 +135,10 @@ namespace finance_api.Controllers
         [HttpPut]
         public IActionResult Put(TransactionRequest request)
         {
+            List<TransactionTag> transactionTags =
+                _dbContext.TransactionTags.ToList()
+                    .FindAll(t => !t.Deleted);
+
             Transaction transaction = new Transaction()
             {
                 Category = GetCategoryById(request.CategoryId),
@@ -109,12 +149,43 @@ namespace finance_api.Controllers
                 Payer = GetPayerById(request.PayerId),
                 Status = GetStatusById(request.StatusId),
                 Summ = request.Summ,
-                Tags = GetTagsByIds(request.TagIds),
+                //Tags = GetTagsByIds(request.TagIds),
                 Type = GetTypeById(request.TypeId)
             };
 
+            string tagIds = "";
+            if (request.TagIds != null)
+            {
+                for (int i = 0; i < request.TagIds.Length; i++)
+                {
+                    tagIds = tagIds + request.TagIds[i].ToString();
+
+                    if (i + 1 < request.TagIds.Length)
+                    {
+                        tagIds = tagIds + ";";
+                    }
+                }
+            }
+            transaction.TagIds = tagIds;
+
             _dbContext.Transactions.Add(transaction);
             _dbContext.SaveChanges();
+
+            if (request.TagIds != null)
+            {
+                request.TagIds.ToList().ForEach(tagId =>
+                {
+                    TransactionTag transactionTag = transactionTags.Find(tag => Guid.Equals(tag.Id, tagId));
+                    if (transactionTag != null)
+                    {
+                        if (transaction.Tags == null)
+                        {
+                            transaction.Tags = new List<TransactionTag>();
+                        }
+                        transaction.Tags.Add(transactionTag);
+                    }
+                });
+            }
 
             return Ok(transaction);
         }
@@ -131,6 +202,10 @@ namespace finance_api.Controllers
                     .FindAll(t => !t.Deleted)
                     .Find(t => Guid.Equals(t.Id, request.Id));
 
+            List<TransactionTag> transactionTags =
+                _dbContext.TransactionTags.ToList()
+                    .FindAll(t => !t.Deleted);
+
             transaction.Category = GetCategoryById(request.CategoryId);
             transaction.Comment = request.Comment;
             transaction.Date = request.TransactionDate;
@@ -138,10 +213,41 @@ namespace finance_api.Controllers
             transaction.Payer = GetPayerById(request.PayerId);
             transaction.Status = GetStatusById(request.StatusId);
             transaction.Summ = request.Summ;
-            transaction.Tags = GetTagsByIds(request.TagIds);
+
+            string tagIds = "";
+            if (request.TagIds != null)
+            {
+                for (int i = 0; i < request.TagIds.Length; i++)
+                {
+                    tagIds = tagIds + request.TagIds[i].ToString();
+
+                    if (i + 1 < request.TagIds.Length)
+                    {
+                        tagIds = tagIds + ";";
+                    }
+                }
+            }
+
+            transaction.TagIds = tagIds;
             transaction.Type = GetTypeById(request.TypeId);
 
             _dbContext.SaveChanges();
+
+            if (request.TagIds != null)
+            {
+                request.TagIds.ToList().ForEach(tagId =>
+                {
+                    TransactionTag transactionTag = transactionTags.Find(tag => Guid.Equals(tag.Id, tagId));
+                    if (transactionTag != null)
+                    {
+                        if (transaction.Tags == null)
+                        {
+                            transaction.Tags = new List<TransactionTag>();
+                        }
+                        transaction.Tags.Add(transactionTag);
+                    }
+                });
+            }
 
             return Ok(transaction);
         }

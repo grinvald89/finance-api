@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using finance_api.Data;
 
@@ -11,9 +12,10 @@ using finance_api.Data;
 namespace finance_api.Migrations
 {
     [DbContext(typeof(FinanceDbContext))]
-    partial class FinanceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220604034816_ChangeTypeForTransactionTadIds")]
+    partial class ChangeTypeForTransactionTadIds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,10 +72,6 @@ namespace finance_api.Migrations
 
                     b.Property<float>("Summ")
                         .HasColumnType("real");
-
-                    b.Property<string>("TagIds")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TypeId")
                         .HasColumnType("uniqueidentifier");

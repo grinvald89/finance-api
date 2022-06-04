@@ -1,4 +1,5 @@
 ﻿using finance_api.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace finance_api.Models
 {
@@ -26,6 +27,10 @@ namespace finance_api.Models
 
         // Теги
         public List<TransactionTag> Tags { get; set; }
+
+        // Ids тегов
+        // Костыль, уберется после правильной установки связей многие-ко-многим
+        public string TagIds { get; set; }
 
         // Комментарий
         public string Comment { get; set; }

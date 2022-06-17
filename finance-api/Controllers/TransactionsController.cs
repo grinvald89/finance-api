@@ -117,6 +117,11 @@ namespace finance_api.Controllers
             {
                 count = transactions.Count - pagination.offset;
             }
+            if (pagination.offset < 0 || count < 0)
+            {
+                pagination.offset = 0;
+                count = 0;
+            }
 
             return transactions.GetRange(pagination.offset, count);
         }

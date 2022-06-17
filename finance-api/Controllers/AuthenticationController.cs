@@ -16,7 +16,8 @@ namespace finance_api.Controllers
 
         private readonly LoginRequest adminLogin = new LoginRequest()
         {
-            Password = "f0l2t%8W",
+            // Password = "f0l2t%8W",
+            Password = "admin",
             UserName = "admin"
         };
 

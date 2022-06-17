@@ -44,11 +44,6 @@ namespace finance_api.Controllers
 
             transactions.ForEach(transaction =>
             {
-                if (Guid.Equals(transaction.Id, Guid.Parse("038c0806-8d2e-433e-b77d-bbe04ff42a07")))
-                {
-                    var a = 1;
-                }
-
                 if (transaction.TagIds != null)
                 {
                     List<string> tagIds = transaction.TagIds.Split(";").ToList();
@@ -71,8 +66,12 @@ namespace finance_api.Controllers
             });
 
             string filterQuery = HttpContext.Request.Query["filter"];
+            string paginationQuery = HttpContext.Request.Query["pagination"];
 
             TransactionFilter filter = JsonSerializer.Deserialize<TransactionFilter>(filterQuery);
+            TransactionPagination pagination = JsonSerializer.Deserialize<TransactionPagination>(paginationQuery);
+
+            // Todo: добавить проверку на валидность пагинатора
 
             if (filter != null)
             {
@@ -110,7 +109,16 @@ namespace finance_api.Controllers
                     });
             }
 
-            return transactions;
+            transactions = transactions.OrderBy(x => x.Date).ToList();
+
+            int count = pagination.count;
+
+            if (transactions.Count < pagination.offset + pagination.count)
+            {
+                count = transactions.Count - pagination.offset;
+            }
+
+            return transactions.GetRange(pagination.offset, count);
         }
 
         [HttpGet("{id}")]
@@ -195,12 +203,33 @@ namespace finance_api.Controllers
         {
             // Todo: проверка на id и существование транзакции
 
-            Transaction transaction =
-                _dbContext.Transactions
-                    .Include(t => t.Payer.FullName)
-                    .ToList()
-                    .FindAll(t => !t.Deleted)
-                    .Find(t => Guid.Equals(t.Id, request.Id));
+            Transaction transaction;
+            bool isNewTransaction = request.Id == null;
+
+            if (isNewTransaction)
+            {
+                transaction = new Transaction()
+                {
+                    Category = GetCategoryById(request.CategoryId),
+                    Comment = request.Comment,
+                    Date = request.TransactionDate,
+                    Direction = GetDirectionById(request.DirectionId),
+                    Id = Guid.NewGuid(),
+                    Payer = GetPayerById(request.PayerId),
+                    Status = GetStatusById(request.StatusId),
+                    Summ = request.Summ,
+                    //Tags = GetTagsByIds(request.TagIds),
+                    Type = GetTypeById(request.TypeId)
+                };
+            } else
+            {
+                transaction =
+                    _dbContext.Transactions
+                        .Include(t => t.Payer.FullName)
+                        .ToList()
+                        .FindAll(t => !t.Deleted)
+                        .Find(t => Guid.Equals(t.Id, request.Id));
+            }
 
             List<TransactionTag> transactionTags =
                 _dbContext.TransactionTags.ToList()
@@ -230,6 +259,11 @@ namespace finance_api.Controllers
 
             transaction.TagIds = tagIds;
             transaction.Type = GetTypeById(request.TypeId);
+
+            if (isNewTransaction)
+            {
+                _dbContext.Transactions.Add(transaction);
+            }
 
             _dbContext.SaveChanges();
 
@@ -338,6 +372,11 @@ namespace finance_api.Controllers
         }
     }
 
+    public class TransactionPagination {
+        public int count { get; set; }
+        public int offset { get; set; }
+    }
+
     public class TransactionFilter
     {
         public Guid[] categoryIds { get; set; }
@@ -360,7 +399,7 @@ namespace finance_api.Controllers
         public Guid CategoryId { get; set; }
         public string Comment { get; set; }
         public Guid DirectionId { get; set; }
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public Guid PayerId { get; set; }
         public Guid StatusId { get; set; }
         public float Summ { get; set; }

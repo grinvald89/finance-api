@@ -35,5 +35,6 @@ namespace finance_api.Data
         public IEnumerable<TransactionStatus> TransactionStatuses { get; set; }
         public IEnumerable<TransactionTag> TransactionTags { get; set; }
         public IEnumerable<TransactionType> TransactionTypes { get; set; }
+        public IEnumerable<TransactionLog> TransactionLogs{ get; set; }
     }
 }

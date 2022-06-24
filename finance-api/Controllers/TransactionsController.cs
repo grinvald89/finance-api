@@ -13,6 +13,7 @@ namespace finance_api.Controllers
     [ApiController]
     public class TransactionsController : ControllerBase
     {
+        private readonly Guid userId = Guid.Parse("7b2d054f-5281-4272-9dd2-a75b0d043d74");
         private readonly FinanceDbContext _dbContext;
 
         public TransactionsController(FinanceDbContext dbContext)
@@ -181,6 +182,16 @@ namespace finance_api.Controllers
             }
             transaction.TagIds = tagIds;
 
+            TransactionLog log = new TransactionLog
+            {
+                Date = DateTime.Now,
+                TransactionJson = JsonSerializer.Serialize(transaction),
+                UserId = userId,
+                Type = "add"
+            };
+
+            _dbContext.TransactionLogs.Add(log);
+
             _dbContext.Transactions.Add(transaction);
             _dbContext.SaveChanges();
 
@@ -270,6 +281,16 @@ namespace finance_api.Controllers
                 _dbContext.Transactions.Add(transaction);
             }
 
+            TransactionLog log = new TransactionLog
+            {
+                Date = DateTime.Now,
+                TransactionJson = JsonSerializer.Serialize(transaction),
+                UserId = userId,
+                Type = isNewTransaction ? "add" : "update"
+            };
+
+            _dbContext.TransactionLogs.Add(log);
+
             _dbContext.SaveChanges();
 
             if (request.TagIds != null)
@@ -301,6 +322,16 @@ namespace finance_api.Controllers
                     .Include(t => t.Payer.FullName)
                     .ToList()
                     .Find(t => Guid.Equals(t.Id, request.Id));
+
+            TransactionLog log = new TransactionLog
+            {
+                Date = DateTime.Now,
+                TransactionJson = JsonSerializer.Serialize(transaction),
+                UserId = userId,
+                Type = "delete"
+            };
+
+            _dbContext.TransactionLogs.Add(log);
 
             transaction.Deleted = true;
             _dbContext.SaveChanges();

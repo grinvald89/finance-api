@@ -18,5 +18,6 @@ namespace finance_api.Data
         public DbSet<TransactionStatus> TransactionStatuses { get; set; }
         public DbSet<TransactionTag> TransactionTags { get; set; }
         public DbSet<TransactionType> TransactionTypes { get; set; }
+        public DbSet<TransactionLog> TransactionLogs { get; set; }
     }
 }
